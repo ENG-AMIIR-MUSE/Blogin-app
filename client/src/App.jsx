@@ -6,13 +6,15 @@ import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
 import Dashboard from './pages/Dashboard';
 import About from './pages/About';
+import Header from './Components/Header';
+
 
 export default function App() {
   return (
     <>
-  <h1 className='bg-red-900' >welcome</h1>
+  <Header/>
   <Routes>
-    <Route path = '/home' element = {<Home/>}/>
+    <Route path = '/' element = {<Home/>}/>
     <Route path = '/projects' element = {<Projects/>}/>
     <Route path = '/sign-in' element = {<SignIn/>}/>
     <Route path = '/sign-up' element = {<SignUp/>}/>
