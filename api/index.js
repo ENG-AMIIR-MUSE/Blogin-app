@@ -8,13 +8,16 @@ const app = express();
 // connect to the database
 
 mongoose.connect(
-  "mongodb+srv://amir:amir@blog.vgue4dg.mongodb.net/blog?retryWrites=true&w=majority"
+  process.env.MONGO_URL
 ).then(()=>{
     console.log("Connected To The Database")
 }).catch(e=>{
     console.log(e)
 })
 
+app.get("/",(req,res)=>{
+    res.json("api test ")
+})
 app.listen(1010, () => {
   console.log(`server is running on port 1010`);
 });
