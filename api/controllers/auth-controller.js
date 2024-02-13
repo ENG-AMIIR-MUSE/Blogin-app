@@ -1,11 +1,12 @@
 import { userModel } from "../models/user-model.js"
 import bycrypt from 'bcryptjs'
+import { errorHandler } from "../utils/error.js"
 
 export const signUp  = async(req,res,next)=>{
   try {
     const {username,email , password} = req.body
     if(!username || !email ||  !password || username == '' || email == '' || password == ''){
-      return res.status(400).json({message:"All Fields Are Required ..."})
+      return  next(errorHandler(400,"All Fields Are Required"))
     }
     const hashedPassword  = bycrypt.hashSync(password,10)
   
