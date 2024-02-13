@@ -1,7 +1,7 @@
 import { userModel } from "../models/user-model.js"
 import bycrypt from 'bcryptjs'
 
-export const signUp  = async(req,res)=>{
+export const signUp  = async(req,res,next)=>{
   try {
     const {username,email , password} = req.body
     if(!username || !email ||  !password || username == '' || email == '' || password == ''){
@@ -19,6 +19,6 @@ export const signUp  = async(req,res)=>{
     res.status(200).json("Signup Successfully")
     
   } catch (error) {
-    res.status(500).json({message:error.message})
+   next(error)
   }
 }
