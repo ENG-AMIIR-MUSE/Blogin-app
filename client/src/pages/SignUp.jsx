@@ -7,8 +7,10 @@ export default function SignUp() {
   const [error, setError] = useState(null);
   const [loading,setLoading] = useState(false)
   const navigation = useNavigate()
-
+ console.log("data",data)
   const handleSubmit = async (e) => {
+
+
     e.preventDefault();
     if (!data.username  || !data.email || !data.password) {
       return setError("All Fields Are Required ....");
