@@ -7,6 +7,7 @@ import SignUp from './pages/SignUp';
 import Dashboard from './pages/Dashboard';
 import About from './pages/About';
 import Header from './Components/Header';
+import FooterCom from './Components/FooterCom';
 
 
 export default function App() {
@@ -21,6 +22,7 @@ export default function App() {
     <Route path = '/dashboard' element = {<Dashboard/>}/>
     <Route path = '/about' element = {<About/>}/>
   </Routes>
+  <FooterCom/>
     </>
   )
 }

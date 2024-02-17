@@ -1,9 +1,44 @@
-import { Button, Label, TextInput } from "flowbite-react";
-import React from "react";
+import { Alert, Button, Label, Spinner, TextInput } from "flowbite-react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import {useNavigate} from 'react-router-dom'
 export default function SignUp() {
+  const [data, setData] = useState({});
+  const [error, setError] = useState(null);
+  const [loading,setLoading] = useState(false)
+  const navigation = useNavigate()
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!data.username  || !data.email || !data.password) {
+      return setError("All Fields Are Required ....");
+    }else{
+    try {
+      setLoading(true)
+      const response = await fetch("/api/auth/sign-up", {
+        method: "post",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+      const res = await response.json();
+      if (res.success === false) {
+        
+        setLoading(false)
+        return setError(res.message);
+      }
+      setLoading(false)
+      setError(null)
+      navigation('/sign-in')
+      console.log(res);
+    } catch (error) {
+      setError(error.message);
+      setLoading(false)
+    }
+  };}
   return (
-    <div className="mt-20">
+    <div className="mt-20 min-h-screen">
       <div className="max-w-4xl m-auto flex flex-col   md:flex-row gap-4 p-5 md:items-center">
         {/* left */}
         <div className="flex-1">
@@ -21,27 +56,72 @@ export default function SignUp() {
 
         {/* right */}
         <div className="flex-1">
-          <form className="">
-            <div class="relative  flex flex-col gap-3 ">
+          <form className="" onSubmit={handleSubmit}>
+            <div className="relative  flex flex-col gap-3 ">
               <div>
                 <Label value="Username" />
-                <TextInput type="text" placeholder="Enter Username" />
+                <TextInput
+                  type="text"
+                  placeholder="Enter Username"
+                  id="username"
+                  onChange={(e) =>
+                    setData({
+                      ...data,
+                      [e.target.id]: e.target.value,
+                    })
+                  }
+                />
               </div>
               <div>
                 <Label value="email" />
-                <TextInput type="email" placeholder="name@Company.com" />
+                <TextInput
+                  type="email"
+                  placeholder="name@Company.com"
+                  id="email"
+                  onChange={(e) =>
+                    setData({
+                      ...data,
+                      [e.target.id]: e.target.value,
+                    })
+                  }
+                />
               </div>
               <div>
                 <Label value="Password" />
-                <TextInput type="password" placeholder="Enter Password" />
+                <TextInput
+                  type="password"
+                  id="password"
+                  placeholder="Enter Password"
+                  onChange={(e) =>
+                    setData({
+                      ...data,
+                      [e.target.id]: e.target.value,
+                    })
+                  }
+                />
               </div>
-            <Button gradientDuoTone="purpleToPink" className="w-full">Signup</Button>
+              <Button
+                type="submit"
+                disabled = {loading}
+                gradientDuoTone="purpleToPink"
+                className="w-full"
+              >
+                {loading ? (
+                  <>
+                  <Spinner size={30}/>
+                  <span className="px-3">Loading ....</span>
+                  </>
+                ) : "Sign Up"}
+              </Button>
             </div>
           </form>
           <div className="flex gap-2 items-center mt-5 ">
             <p>Have An account ? </p>
-            <Link className="text-blue-500 font-bold" to  = '/sign-in'>Sign in</Link>
+            <Link className="text-blue-500 font-bold" to="/sign-in">
+              Sign in
+            </Link>
           </div>
+          {error && (<Alert color="failure">{error}</Alert>) }
         </div>
       </div>
     </div>
