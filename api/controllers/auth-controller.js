@@ -23,3 +23,7 @@ export const signUp  = async(req,res,next)=>{
    next(error)
   }
 }
+
+export const signIn = async(req,res,next)=>{
+  res.json("welcome")
+}
