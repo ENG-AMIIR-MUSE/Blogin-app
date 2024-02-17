@@ -32,8 +32,12 @@ export default function SignIn() {
       }
       setLoading(false)
       setError(null)
-      navigation('/sign-in')
-      console.log(res);
+      console.log("response",res)
+      if(response.ok){
+        navigation('/')
+        console.log(res);
+
+      }
     } catch (error) {
       setError(error.message);
       setLoading(false)
@@ -51,8 +55,7 @@ export default function SignIn() {
             <span>Blog</span>
           </Link>
           <p className="mt-5 text-sm">
-            This is Blog Project, You Can Sign Up With Your Email and Password
-            Or Google
+           You Can Sign With Email and Password or Google Account
           </p>
         </div>
 
@@ -105,9 +108,9 @@ export default function SignIn() {
             </div>
           </form>
           <div className="flex gap-2 items-center mt-5 ">
-            <p>Have An account ? </p>
-            <Link className="text-blue-500 font-bold" to="/sign-in">
-              Sign in
+            <p>Dont't Have An Account ? </p>
+            <Link className="text-blue-500 font-bold" to="/sign-up">
+              Sign up
             </Link>
           </div>
           {error && (<Alert color="failure">{error}</Alert>) }
