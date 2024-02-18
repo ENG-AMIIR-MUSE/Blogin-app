@@ -2,21 +2,24 @@ import { Alert, Button, Label, Spinner, TextInput } from "flowbite-react";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import {useNavigate} from 'react-router-dom'
+import { useDispatch,useSelector } from "react-redux";
+import { signInStart,signInFailure,signInSuccess } from "../redux/slices/userSlice";
 export default function SignIn() {
   const [data, setData] = useState({});
-  const [error, setError] = useState(null);
-  const [loading,setLoading] = useState(false)
   const navigation = useNavigate()
+  const dispatch  = useDispatch()
+
+  const {loading, error:errorMessage} = useSelector((state)=>state.user)
  console.log("data",data)
   const handleSubmit = async (e) => {
 
 
     e.preventDefault();
     if (!data.email || !data.password) {
-      return setError("All Fields Are Required ....");
+      return dispatch(signInFailure("All Fields Are Required"))
     }else{
     try {
-      setLoading(true)
+      dispatch(signInStart())
       const response = await fetch("/api/auth/sign-in", {
         method: "post",
         headers: {
@@ -27,11 +30,12 @@ export default function SignIn() {
       const res = await response.json();
       if (res.success === false) {
         
-        setLoading(false)
-        return setError(res.message);
+        return dispatch(signInFailure(res.message))
+        
       }
-      setLoading(false)
-      setError(null)
+      console.log("response from dev",res)
+      dispatch(signInSuccess(res))
+    
       console.log("response",res)
       if(response.ok){
         navigation('/')
@@ -39,8 +43,7 @@ export default function SignIn() {
 
       }
     } catch (error) {
-      setError(error.message);
-      setLoading(false)
+     dispatch(signInFailure(error.message))
     }
   };}
   return (
@@ -54,8 +57,8 @@ export default function SignIn() {
             </span>
             <span>Blog</span>
           </Link>
-          <p className="mt-5 text-sm">
-           You Can Sign With Email and Password or Google Account
+          <p className="mt-5 text-sm ">
+           You Can   Sign With Username and Password Or Google Account 
           </p>
         </div>
 
@@ -113,7 +116,7 @@ export default function SignIn() {
               Sign up
             </Link>
           </div>
-          {error && (<Alert color="failure">{error}</Alert>) }
+          {errorMessage && (<Alert color="failure">{errorMessage}</Alert>) }
         </div>
       </div>
     </div>
