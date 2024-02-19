@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import {useNavigate} from 'react-router-dom'
 import { useDispatch,useSelector } from "react-redux";
 import { signInStart,signInFailure,signInSuccess } from "../redux/slices/userSlice";
+import Outh from "../Components/Outh";
 export default function SignIn() {
   const [data, setData] = useState({});
   const navigation = useNavigate()
@@ -108,6 +109,7 @@ export default function SignIn() {
                   </>
                 ) : "Sign Up"}
               </Button>
+              <Outh/>
             </div>
           </form>
           <div className="flex gap-2 items-center mt-5 ">
