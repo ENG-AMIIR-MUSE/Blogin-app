@@ -2,13 +2,22 @@ import { Avatar, Button, Dropdown, Navbar, TextInput } from "flowbite-react";
 import React from "react";
 import { Link } from "react-router-dom";
 import { AiOutlineSearch } from "react-icons/ai";
-import { FaMoon } from "react-icons/fa";
+import { FaMoon, FaSun } from "react-icons/fa";
 import { useLocation } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { toggleTheme } from "../redux/slices/Themes/themeSlice";
+import {useSelector , useDispatch} from 'react-redux'
+
+
+
 export default function Header() {
-  const {currentUser} = useSelector((state) => state.user);
+  const dispath  = useDispatch()
+  const {theme } =  useSelector((state)=>state.theme)
+
+  const { currentUser } = useSelector((state) => state.user);
+
   const location = useLocation().pathname;
-  console.log(currentUser)
+
+  console.log(currentUser);
   return (
     <>
       <Navbar className="border-b-2">
@@ -36,32 +45,37 @@ export default function Header() {
           <Button
             className="w-10 h-10 rounded-full hidden sm:flex "
             color="gray"
-          >
-            <FaMoon />
+            onClick={()=>{
+              dispath(toggleTheme())
+            }}
+            >
+            { theme  === 'llight' ? (
+                <FaSun/>
+            ):(
+              <FaMoon/>
+            )}
+        
           </Button>
           {currentUser ? (
-        <Dropdown
-        arrowIcon= {false}
-        inline
-        label = {
-          <Avatar img={currentUser.photoUrl} rounded />
-
-        }>
-          <Dropdown.Header>
-            <span className="flex items-center">@{currentUser.username}</span>
-            <span className="flex items-center truncate">{currentUser.email}</span>
-          </Dropdown.Header>
-            <Link to={'/dashboard?tab=profile'}>
-              <Dropdown.Item>
-                Profile
-              </Dropdown.Item>
-              <Dropdown.Divider/>
-              <Dropdown.Item>
-                Sign Out
-              </Dropdown.Item>
-            </Link>
-        </Dropdown>
-        
+            <Dropdown
+              arrowIcon={false}
+              inline
+              label={<Avatar img={currentUser.photoUrl} rounded />}
+            >
+              <Dropdown.Header>
+                <span className="flex items-center">
+                  @{currentUser.username}
+                </span>
+                <span className="flex items-center truncate">
+                  {currentUser.email}
+                </span>
+              </Dropdown.Header>
+              <Link to={"/dashboard?tab=profile"}>
+                <Dropdown.Item>Profile</Dropdown.Item>
+                <Dropdown.Divider />
+                <Dropdown.Item>Sign Out</Dropdown.Item>
+              </Link>
+            </Dropdown>
           ) : (
             <>
               <Button className="bg-red-900  bg-gradient-to-r from-purple-500 to-blue-500">

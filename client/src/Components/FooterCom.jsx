@@ -3,6 +3,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { BsFacebook, BsInstagram, BsYoutube, BsTiktok } from "react-icons/bs";
 
+
 export default function FooterCom() {
   return (
     <Footer container className="border border-t-8 border-teal-500">
