@@ -54,7 +54,6 @@ export default function Header() {
             ):(
               <FaMoon/>
             )}
-        
           </Button>
           {currentUser ? (
             <Dropdown
